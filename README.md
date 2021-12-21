@@ -1,1 +1,2 @@
 # uporabniki
+Seznam vseh igralcev

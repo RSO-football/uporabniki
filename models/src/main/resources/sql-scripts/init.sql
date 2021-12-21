@@ -1,0 +1,1 @@
+INSERT INTO uporabniki_metadata (uporabnikID, role) VALUES (111111, 'trener');

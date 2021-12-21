@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uporabniki-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uporabniki
+  template:
+    metadata:
+      labels:
+        app: uporabniki
+    spec:
+      containers:
+        - image: ts4894/uporabniki:2021-12-18-01-50-10
+          name: uporabniki
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://uporabniki-db.postgres.database.azure.com:5432/postgres?user=postgresAdmin&sslmode=require
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: postgresAdmin
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pas-uporabniki
+                  key: password
+          ports:
+            - containerPort: 8083
+              name: server
+              protocol: TCP
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: uporabniki
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8083
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: uporabniki

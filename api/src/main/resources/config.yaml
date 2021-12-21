@@ -1,0 +1,34 @@
+kumuluzee:
+  name: uporabniki-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8083
+    http:
+      port: 8083
+  datasources:
+    - jndi-name: jdbc/UporabnikiMetadataDS
+      connection-url: jdbc:postgresql://uporabniki-db.postgres.database.azure.com:5432/postgres?user=postgresAdmin&password=&sslmode=require
+      username: postgresAdmin
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/UporabnikiMetadataDS
+    metrics:
+      web-instrumentation:
+        - name: uporabniki-endpoint
+          url-pattern: /v1/uporabniki/*
+  rest-client:
+    registrations:
+      - class: uporabniki-processing-api
+        url: http://20.120.65.121:8083/v1
+        read-timeout: 5000
+rest-properties:
+  maintenance-mode: false
+  broken: false
+app-properties:
+  amazon-rekognition:
+    access-key:
+    secret-key:
