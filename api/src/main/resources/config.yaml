@@ -14,7 +14,7 @@ kumuluzee:
       port: 8083
   datasources:
     - jndi-name: jdbc/UporabnikiMetadataDS
-      connection-url: jdbc:postgresql://uporabniki-db.postgres.database.azure.com:5432/postgres?user=postgresAdmin&password=&sslmode=require
+      connection-url: jdbc:postgresql://uporabniki-db.postgres.database.azure.com:5432/postgres?user=postgresAdmin&password=UporabnikiDBPass123&sslmode=require
       username: postgresAdmin
   health:
     checks:

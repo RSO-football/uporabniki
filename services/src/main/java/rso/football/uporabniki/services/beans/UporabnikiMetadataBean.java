@@ -36,6 +36,16 @@ public class UporabnikiMetadataBean {
 
     }
 
+
+    public List<UporabnikiMetadata> getTrenerjiMetadata() {
+        TypedQuery<UporabnikiMetadataEntity> query = em.createNamedQuery(
+                "UporabnikiMetadataEntity.getAllTrenerji", UporabnikiMetadataEntity.class);
+
+        List<UporabnikiMetadataEntity> resultList = query.getResultList();
+
+        return resultList.stream().map(UporabnikiMetadataConverter::toDto).collect(Collectors.toList());
+    }
+
     public List<UporabnikiMetadata> getUporabnikiMetadataFilter(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)

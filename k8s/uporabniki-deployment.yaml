@@ -13,7 +13,7 @@ spec:
         app: uporabniki
     spec:
       containers:
-        - image: ts4894/uporabniki:2021-12-21-23-54-34
+        - image: ts4894/uporabniki:2022-01-02-22-26-11
           name: uporabniki
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL

@@ -38,6 +38,15 @@ public class UporabnikiMetadataResource {
     }
 
     @GET
+    @Path("/trenerji")
+    public Response getTrenerjiMetadata() {
+
+        List<UporabnikiMetadata> trenerjiMetadata = uporabnikiMetadataBean.getTrenerjiMetadata();
+
+        return Response.status(Response.Status.OK).entity(trenerjiMetadata).build();
+    }
+
+    @GET
     @Path("/{uporabnikiMetadataId}")
     public Response getUporabnikiMetadata(@PathParam("uporabnikiMetadataId") Integer uporabnikiMetadataId) {
 
