@@ -1,5 +1,6 @@
 package rso.football.uporabniki.api.v1.resources;
 
+import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import rso.football.uporabniki.lib.UporabnikiMetadata;
 import rso.football.uporabniki.services.beans.UporabnikiMetadataBean;
 
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 @Path("/uporabniki")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@CrossOrigin(supportedMethods = "GET, POST, DELETE, PUT, HEAD, OPTIONS")
 public class UporabnikiMetadataResource {
 
     private Logger log = Logger.getLogger(UporabnikiMetadataResource.class.getName());
