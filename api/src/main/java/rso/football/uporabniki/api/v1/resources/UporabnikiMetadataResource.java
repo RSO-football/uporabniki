@@ -47,6 +47,15 @@ public class UporabnikiMetadataResource {
     }
 
     @GET
+    @Path("/trenerjiId")
+    public Response getTrenerjiIdMetadata() {
+
+        String trenerjiId = uporabnikiMetadataBean.getTrenerjiIdMetadata();
+
+        return Response.status(Response.Status.OK).entity(trenerjiId).build();
+    }
+
+    @GET
     @Path("/{uporabnikiMetadataId}")
     public Response getUporabnikiMetadata(@PathParam("uporabnikiMetadataId") Integer uporabnikiMetadataId) {
 

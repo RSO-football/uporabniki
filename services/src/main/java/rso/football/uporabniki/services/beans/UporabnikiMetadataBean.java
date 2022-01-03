@@ -46,6 +46,24 @@ public class UporabnikiMetadataBean {
         return resultList.stream().map(UporabnikiMetadataConverter::toDto).collect(Collectors.toList());
     }
 
+
+    public String getTrenerjiIdMetadata() {
+        TypedQuery<UporabnikiMetadataEntity> query = em.createNamedQuery(
+                "UporabnikiMetadataEntity.getAllTrenerji", UporabnikiMetadataEntity.class);
+
+        List<UporabnikiMetadataEntity> resultList = query.getResultList();
+
+        String result = "";
+        for (UporabnikiMetadataEntity u : resultList){
+            result += u.getId()+",";
+        }
+        if (result.length() > 0){
+            result = result.substring(0, result.length() - 1);
+        }
+
+        return result;
+    }
+
     public List<UporabnikiMetadata> getUporabnikiMetadataFilter(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
