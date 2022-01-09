@@ -9,9 +9,7 @@ kumuluzee:
         allow-origin: "http://kumuluz.com"
         allow-subdomains: false
   server:
-    base-url: http://localhost:8083
-    http:
-      port: 8083
+    base-url: http://40.76.175.239/uporabniki
   datasources:
     - jndi-name: jdbc/UporabnikiMetadataDS
       connection-url: jdbc:postgresql://uporabniki-db.postgres.database.azure.com:5432/postgres?user=postgresAdmin&password=UporabnikiDBPass123&sslmode=require
