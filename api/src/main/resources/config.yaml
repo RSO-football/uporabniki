@@ -47,8 +47,8 @@ kumuluzee:
                           </Configuration>'
   rest-client:
     registrations:
-      - class: uporabniki-processing-api
-        url: http://20.120.65.121:8083/v1
+      - class: postavke-api
+        url: http://52.151.221.150:8084/v1
         read-timeout: 5000
 rest-properties:
   maintenance-mode: false

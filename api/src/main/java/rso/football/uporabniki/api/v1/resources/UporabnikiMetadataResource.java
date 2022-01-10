@@ -11,8 +11,11 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import rso.football.uporabniki.dtos.PostavkaRequest;
 import rso.football.uporabniki.lib.UporabnikiMetadata;
 import rso.football.uporabniki.services.beans.UporabnikiMetadataBean;
+import rso.football.uporabniki.services.clients.PostavkaCreateApi;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 import java.util.logging.Logger;
 
 @Log
@@ -36,6 +40,10 @@ public class UporabnikiMetadataResource {
 
     @Inject
     private UporabnikiMetadataBean uporabnikiMetadataBean;
+
+    @Inject
+    @RestClient
+    private PostavkaCreateApi postavkaCreateApi;
 
     @Context
     protected UriInfo uriInfo;
@@ -126,6 +134,17 @@ public class UporabnikiMetadataResource {
         }
         else {
             uporabnikiMetadata = uporabnikiMetadataBean.createUporabnikiMetadata(uporabnikiMetadata);
+        }
+
+        if (uporabnikiMetadata.getRole().equals("trener") || uporabnikiMetadata.getRole().equals("Trener")){
+            System.out.println("Asinhrono delanje postavke");
+            CompletionStage<String> stringCompletionStage = postavkaCreateApi.createPostavkaTrenerju(new PostavkaRequest(uporabnikiMetadata.getUporabnikId(), 90.0F));
+
+            stringCompletionStage.whenComplete((s, throwable) -> System.out.println(s));
+            stringCompletionStage.exceptionally(throwable -> {
+               log.severe(throwable.getMessage());
+               return throwable.getMessage();
+            });
         }
 
         return Response.status(Response.Status.CREATED).entity(uporabnikiMetadata).build();
