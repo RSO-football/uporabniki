@@ -2,6 +2,7 @@ package rso.football.uporabniki.services.beans;
 
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import org.antlr.v4.runtime.misc.Pair;
 import rso.football.uporabniki.lib.UporabnikiMetadata;
 import rso.football.uporabniki.models.converters.UporabnikiMetadataConverter;
 import rso.football.uporabniki.models.entities.UporabnikiMetadataEntity;
@@ -106,15 +107,20 @@ public class UporabnikiMetadataBean {
         return UporabnikiMetadataConverter.toDto(uporabnikiMetadataEntity);
     }
 
-    public UporabnikiMetadata putUporabnikiMetadata(Integer id, UporabnikiMetadata uporabnikiMetadata) {
+    public Pair<UporabnikiMetadata, Boolean> putUporabnikiMetadata(Integer id, UporabnikiMetadata uporabnikiMetadata) {
 
         UporabnikiMetadataEntity c = em.find(UporabnikiMetadataEntity.class, id);
+        Boolean isNewTrener = false;
 
         if (c == null) {
             return null;
         }
 
         UporabnikiMetadataEntity updatedUporabnikiMetadataEntity = UporabnikiMetadataConverter.toEntity(uporabnikiMetadata);
+
+        if (c.getRole().equals("igralec") || c.getRole().equals("Igralec")){
+            isNewTrener = true;
+        }
 
         try {
             beginTx();
@@ -126,7 +132,7 @@ public class UporabnikiMetadataBean {
             rollbackTx();
         }
 
-        return UporabnikiMetadataConverter.toDto(updatedUporabnikiMetadataEntity);
+        return new Pair<>(UporabnikiMetadataConverter.toDto(updatedUporabnikiMetadataEntity), isNewTrener);
     }
 
     public boolean deleteUporabnikiMetadata(Integer id) {

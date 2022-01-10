@@ -2,6 +2,7 @@ package rso.football.uporabniki.api.v1.resources;
 
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import com.kumuluz.ee.logs.cdi.Log;
+import org.antlr.v4.runtime.misc.Pair;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -169,10 +170,26 @@ public class UporabnikiMetadataResource {
                                                   schema = @Schema(implementation = UporabnikiMetadata.class)))
                                                   UporabnikiMetadata uporabnikiMetadata) {
 
-        uporabnikiMetadata = uporabnikiMetadataBean.putUporabnikiMetadata(uporabnikiMetadataId, uporabnikiMetadata);
-
-        if (uporabnikiMetadata == null) {
+        Pair<UporabnikiMetadata, Boolean> returnValue = uporabnikiMetadataBean.putUporabnikiMetadata(uporabnikiMetadataId, uporabnikiMetadata);
+        System.out.println(returnValue);
+        if (returnValue == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        System.out.println(returnValue.a);
+        System.out.println(returnValue.b);
+        uporabnikiMetadata = returnValue.a;
+
+        if (returnValue.b) {
+            if (uporabnikiMetadata.getRole().equals("trener") || uporabnikiMetadata.getRole().equals("Trener")) {
+                System.out.println("Asinhrono delanje postavke, ko spreminjas vlogo uporabnika");
+                CompletionStage<String> stringCompletionStage = postavkaCreateApi.createPostavkaTrenerju(new PostavkaRequest(uporabnikiMetadata.getUporabnikId(), 90.0F));
+
+                stringCompletionStage.whenComplete((s, throwable) -> System.out.println(s));
+                stringCompletionStage.exceptionally(throwable -> {
+                    log.severe(throwable.getMessage());
+                    return throwable.getMessage();
+                });
+            }
         }
 
         return Response.status(Response.Status.NO_CONTENT).build();
