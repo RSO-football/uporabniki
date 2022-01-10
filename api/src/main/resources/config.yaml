@@ -9,7 +9,7 @@ kumuluzee:
         allow-origin: "http://kumuluz.com"
         allow-subdomains: false
   server:
-    base-url: http://20.85.248.6:8083
+    base-url: https://20.85.248.6:8083
     http:
       port: 8083
   datasources:
@@ -48,7 +48,7 @@ kumuluzee:
   rest-client:
     registrations:
       - class: postavke-api
-        url: http://52.151.221.150:8084/v1
+        url: https://52.151.221.150:8084/v1
         read-timeout: 5000
 rest-properties:
   maintenance-mode: false
